@@ -73,8 +73,18 @@ class Levels:
                         puzzle[x-i][y+i] = word[i]
                     break  
 
-       
-            
+        # Fills empty spaces of the puzzle with random letters
+        for i in range(lvlrowcol):
+            for j in range(lvlrowcol):
+                if puzzle[i][j] == '':
+                    puzzle[i][j] = chr(random.randint(65, 90))     
+
+        # Displays the puzzle
+        def display_puzzle():
+            for row in puzzle:
+                print(' '.join(row))
+
+        display_puzzle()    
 
 
 # Level 1
