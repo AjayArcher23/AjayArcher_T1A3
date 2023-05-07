@@ -9,7 +9,7 @@ levels = [
     ["BASKETBALL", "FOOTBALL", "TENNIS", "BASEBALL", "HOCKEY", "GOLF", "BOXING"],
     ["LONDON", "PARIS", "TOKYO", "WASHINGTON", "AMSTERDAM", "CANBERRA", "ROME"],
     ["ROCK", "RAP", "JAZZ", "POP", "CLASSICAL", "COUNTRY", "REGGAE"],
-    ["LOOP", "CONDITIONAL", "FUNCTION", "CLASS", "OBJECT", "INPUT"]
+    ["SPOON", "KNIFE", "FORK", "CUP", "PLATE", "BOWL"]
 ]
 
 # 2D list for letters
@@ -111,11 +111,11 @@ def search_word(word, words):
 def get_user_input():
     return input("Enter a word to search for (or type 'QUIT' to exit): ").upper()
 
+# Clears the terminal of text
 def clear_output():
         print('\033[2J\033[1;1H', end='')
 
 # Main Game Loop
-
 def play_game():
     global puzzle
     print("Welcome to the word search game!")
@@ -128,7 +128,7 @@ def play_game():
         place_words(words)
         fill_puzzle()
         found_words = []
-        while len(found_words) < len(words):
+        while len(found_words) < len(levels[level-1]):
             display_puzzle()
             word = get_user_input()
             if word == 'QUIT':
@@ -138,9 +138,14 @@ def play_game():
                 print("You already found that word!")
             elif search_word(word, words):
                 found_words.append(word)
-                print(f"Great job! You've found {len(found_words)} out of {len(words)} words.") 
+                print(f"Great job! You've found {len(found_words)} out of {len(words)} words.")
             else:
-                print("Sorry, that word is not in the puzzle...")
-        level += 1
-    print("Thanks for playing!")
+                print("Sorry, that word is not in the puzzle.")
+        if not quit_game:
+            print(f"Congratulations, you completed level {level}!")
+            level += 1 
+            clear_output()
+    if level > 5:
+        print("Congratulations, you have completed all levels!") 
+        quit_game = True
 play_game()
