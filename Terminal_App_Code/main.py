@@ -1,7 +1,8 @@
-import random
+import random 
 
 lvlrowcol = 10
 
+# Wordsearch Levels/Words
 levels = [
     ["DOG", "TIGER", "LIZARD", "PENGUIN", "ELEPHANT"],
     ["BASKETBALL", "FOOTBALL", "TENNIS", "BASEBALL", "HOCKEY", "GOLF", "BOXING"],
@@ -13,7 +14,7 @@ levels = [
 # 2D list for letters
 puzzle = [['' for _ in range(lvlrowcol)] for _ in range(lvlrowcol)]
 
-#Places words in the puzzle
+# Places words in the puzzle
 def place_words(words): 
     for word in words:
         while True:
@@ -89,18 +90,18 @@ def display_puzzle():
 def search_word(word):
     # Check horizontal lines
     for row in puzzle:
-        if word in ''.join(row):
+        if all([l in row for l in word]):
             return True
     # Check vertical lines
     for i in range(lvlrowcol):
-        if word in ''.join([row[i] for row in puzzle]):
+        if all([l in [row[i] for row in puzzle] for l in word]):
             return True 
     # Check diagonal lines
     for i in range(lvlrowcol - len(word) + 1):
         for j in range(lvlrowcol - len(word) + 1):
-            if word == ''.join([puzzle[i+k][j+k] for k in range(len(word))] ):
+            if all([l == puzzle[i+k][j+k] for k, l in enumerate(word)]):
                 return True
-            elif word == ''.join([puzzle[i+k][j+len(word)-1-k] for k in range(len(word)-1, -1, -1)]):
+            elif all([l == puzzle[i+k][j+len(word)-1-k] for k, l in enumerate(reversed(word))]):
                 return True
 
     return False
@@ -122,27 +123,23 @@ def play_game():
         fill_puzzle()
         display_puzzle()
         found_words = []
-        for word in words:
-            found = False
-            while not found:
-                user_input = get_user_input() 
-                print(user_input)
-                if user_input.startswith("LEVEL ") and user_input[6:] == str(level + 1):
-                    break
-                elif user_input == "QUIT":
-                    quit_game = True
-                    break
-                elif search_word(user_input) and user_input == word and user_input not in found_words:
-                    print("Congratulations! You found a word!")
-                    found = True 
-                    found_words.append(word)
-                elif search_word(user_input):
-                    print("You've already found that word! Try again.")
-                else:
-                    print("Sorry, that word is not in the puzzle. Try again.")
+        while len(found_words) < len(words):
+            user_input = get_user_input() 
+            if user_input.startswith("LEVEL ") and user_input[6:] == str(level + 1):
+                break
+            elif user_input == "QUIT":
+                quit_game = True
+                break
+            elif search_word(user_input) and user_input not in found_words:
+                print("Congratulations! You found a word!")
+                found_words.append(user_input)
+            else:
+                print("Sorry, that's not a valid word in the puzzle.")
         if quit_game:
             break
-    print("Thanks for playing!") 
+    if quit_game:
+        print("You have quit the game.")
+    else:
+        print("Congratulations, you have completed all levels!") 
     
-if __name__ == '__main__':
-    play_game()
+play_game()
