@@ -1,6 +1,5 @@
 import random 
 
-
 lvlrowcol = 10
 
 # Wordsearch Levels/Words
@@ -20,7 +19,7 @@ def place_words(words):
     for word in words:
         while True:
             x, y = random.randint(0, lvlrowcol - 1), random.randint(0, lvlrowcol - 1)
-            direction = random.choice(['horizontal', 'vertical', 'diagonal_down', 'diagonal_up'])
+            direction = random.choice(['horizontal', 'vertical', 'diagonal_down', 'diagonal_up']) 
             if direction == 'horizontal':
                 if y + len(word) > lvlrowcol:
                     continue
@@ -80,7 +79,6 @@ def fill_puzzle():
         for j in range(lvlrowcol):
             if puzzle[i][j] == '':
                 puzzle[i][j] = chr(random.randint(65, 90))
-
 
 # Displays the puzzle
 def display_puzzle():

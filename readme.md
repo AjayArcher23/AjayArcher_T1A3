@@ -1,14 +1,14 @@
 # Word Search Terminal Application 
 
 ## Features 
-. Word Search Puzzle
-. Skip Level Feature 
-. List of unfound words "......"  
-. List of found words   "Search"  
-. Visually pleasing ui 
+. Randomly generated puzzles which contain select words in random positions surrounded by random letters
+. A quit feature to exit the game when necessary
+. A counter which informs the user how many correct answers out of the total they've inputted. 
 
-## List of tasks 
-. Find/Create list of letters and words for word searches. 
-. Research the best way to print list to terminal. 
-. create list of user requirements at each stage of application
-. 
+## How to use the application 
+Simply run the file in a terminal(python3 main.py) 
+Input words that are present in the puzzle to progress. 
+Can input 'quit' to exit the application.
+
+## Repository Link 
+https://github.com/AjayArcher23/AjayArcher_T1A3 
