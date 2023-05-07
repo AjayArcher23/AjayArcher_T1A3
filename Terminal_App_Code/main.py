@@ -1,5 +1,6 @@
 import random 
 
+
 lvlrowcol = 10
 
 # Wordsearch Levels/Words
@@ -87,59 +88,59 @@ def display_puzzle():
         print(' '.join(row))
 
 # Searches puzzle for the word
-def search_word(word):
-    # Check horizontal lines
-    for row in puzzle:
-        if all([l in row for l in word]):
-            return True
-    # Check vertical lines
-    for i in range(lvlrowcol):
-        if all([l in [row[i] for row in puzzle] for l in word]):
-            return True 
-    # Check diagonal lines
-    for i in range(lvlrowcol - len(word) + 1):
-        for j in range(lvlrowcol - len(word) + 1):
-            if all([l == puzzle[i+k][j+k] for k, l in enumerate(word)]):
+def search_word(word, words):
+    if word in words:
+        # Check horizontal lines
+        for row in puzzle:
+            if word in ''.join(row):
                 return True
-            elif all([l == puzzle[i+k][j+len(word)-1-k] for k, l in enumerate(reversed(word))]):
-                return True
-
+        # Check vertical lines
+        for i in range(lvlrowcol):
+            if word in ''.join([row[i] for row in puzzle]):
+                return True 
+        # Check diagonal lines
+        for i in range(lvlrowcol - len(word) + 1):
+            for j in range(lvlrowcol - len(word) + 1):
+                if word == ''.join([puzzle[i+k][j+k] for k in range(len(word))] ):
+                    return True
+                elif word == ''.join([puzzle[i+k][j+len(word)-1-k] for k in range(len(word)-1, -1, -1)]):
+                    return True
     return False
 
 # Prompts the user for a word
 def get_user_input():
     return input("Enter a word to search for (or type 'QUIT' to exit): ").upper()
 
+def clear_output():
+        print('\033[2J\033[1;1H', end='')
+
 # Main Game Loop
+
 def play_game():
     global puzzle
     print("Welcome to the word search game!")
     quit_game = False
-    for level in range(1, 6):
+    level = 1
+    while not quit_game and level <= 5:
         print(f"Level {level}")
         puzzle = [['' for _ in range(lvlrowcol)] for _ in range(lvlrowcol)]
         words = levels[level - 1]
         place_words(words)
         fill_puzzle()
-        display_puzzle()
         found_words = []
         while len(found_words) < len(words):
-            user_input = get_user_input() 
-            if user_input.startswith("LEVEL ") and user_input[6:] == str(level + 1):
-                break
-            elif user_input == "QUIT":
+            display_puzzle()
+            word = get_user_input()
+            if word == 'QUIT':
                 quit_game = True
                 break
-            elif search_word(user_input) and user_input not in found_words:
-                print("Congratulations! You found a word!")
-                found_words.append(user_input)
+            elif word in found_words:
+                print("You already found that word!")
+            elif search_word(word, words):
+                found_words.append(word)
+                print(f"Great job! You've found {len(found_words)} out of {len(words)} words.") 
             else:
-                print("Sorry, that's not a valid word in the puzzle.")
-        if quit_game:
-            break
-    if quit_game:
-        print("You have quit the game.")
-    else:
-        print("Congratulations, you have completed all levels!") 
-    
+                print("Sorry, that word is not in the puzzle...")
+        level += 1
+    print("Thanks for playing!")
 play_game()
